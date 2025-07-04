@@ -30,7 +30,6 @@ impl Coalition {
 }
 
 pub struct Shapley {
-    n: usize,
     coalition_worth: HashMap<Coalition, f64>,
     coalition_size_weights: HashMap<usize, f64>,
 }
@@ -49,7 +48,6 @@ impl Shapley {
         }
 
         Shapley {
-            n,
             coalition_worth,
             coalition_size_weights: weights,
         }
@@ -91,6 +89,7 @@ impl Shapley {
 mod tests {
     use super::*;
     use maplit::hashmap;
+    use statrs::assert_almost_eq;
 
     #[test]
     fn test_empty_coalition_handling() {
@@ -141,8 +140,8 @@ mod tests {
         };
 
         let shapley = Shapley::new(vec![1, 2, 3], coalition_worth);
-        assert_eq!(shapley.shapley_value(1).unwrap(), 200.0);
-        assert_eq!(shapley.shapley_value(2).unwrap(), 50.0);
-        assert_eq!(shapley.shapley_value(3).unwrap(), 50.0);
+        assert_almost_eq!(shapley.shapley_value(1).unwrap(), 200.0, 1e-10);
+        assert_almost_eq!(shapley.shapley_value(2).unwrap(), 50.0, 1e-10);
+        assert_almost_eq!(shapley.shapley_value(3).unwrap(), 50.0, 1e-10);
     }
 }
