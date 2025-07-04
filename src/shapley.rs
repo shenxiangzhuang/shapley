@@ -93,20 +93,6 @@ mod tests {
     use maplit::hashmap;
 
     #[test]
-    fn test_shapley_value() {
-        let coalition_worth = hashmap! {
-            Coalition::new(vec![]) => 0.0,
-            Coalition::new(vec![1]) => 10.0,
-            Coalition::new(vec![2]) => 20.0,
-            Coalition::new(vec![1, 2]) => 30.0,
-        };
-
-        let shapley = Shapley::new(vec![1, 2], coalition_worth);
-        assert_eq!(shapley.shapley_value(1).unwrap(), 10.0);
-        assert_eq!(shapley.shapley_value(2).unwrap(), 20.0);
-    }
-
-    #[test]
     fn test_empty_coalition_handling() {
         let coalition_worth = hashmap! {
             Coalition::new(vec![1]) => 5.0,
@@ -123,5 +109,40 @@ mod tests {
         };
         let shapley = Shapley::new(vec![1, 2], coalition_worth);
         assert!(shapley.shapley_value(1).is_err());
+    }
+
+    #[test]
+    fn test_simple_shapley_value() {
+        let coalition_worth = hashmap! {
+            Coalition::new(vec![]) => 0.0,
+            Coalition::new(vec![1]) => 10.0,
+            Coalition::new(vec![2]) => 20.0,
+            Coalition::new(vec![1, 2]) => 30.0,
+        };
+
+        let shapley = Shapley::new(vec![1, 2], coalition_worth);
+        assert_eq!(shapley.shapley_value(1).unwrap(), 10.0);
+        assert_eq!(shapley.shapley_value(2).unwrap(), 20.0);
+    }
+
+    /// https://gtl.csa.iisc.ac.in/gametheory/ln/web-cp5-shapley.pdf
+    /// 2.1 Example 1: Divide the Dollar Game
+    #[test]
+    fn test_divide_dollar_game() {
+        let coalition_worth = hashmap! {
+            Coalition::new(vec![1]) => 0.0,
+            Coalition::new(vec![2]) => 0.0,
+            Coalition::new(vec![3]) => 0.0,
+            Coalition::new(vec![2, 3]) => 0.0,
+
+            Coalition::new(vec![1, 2]) => 300.0,
+            Coalition::new(vec![1, 3]) => 300.0,
+            Coalition::new(vec![1, 2, 3]) => 300.0,
+        };
+
+        let shapley = Shapley::new(vec![1, 2, 3], coalition_worth);
+        assert_eq!(shapley.shapley_value(1).unwrap(), 200.0);
+        assert_eq!(shapley.shapley_value(2).unwrap(), 50.0);
+        assert_eq!(shapley.shapley_value(3).unwrap(), 50.0);
     }
 }
