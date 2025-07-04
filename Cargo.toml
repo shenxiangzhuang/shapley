@@ -9,4 +9,6 @@ name = "shapley"
 crate-type = ["cdylib"]
 
 [dependencies]
+anyhow = "1.0.98"
 pyo3 = "0.25.0"
+statrs = "0.18.0"
