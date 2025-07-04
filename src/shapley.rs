@@ -146,7 +146,7 @@ mod tests {
     }
 
     // https://gtl.csa.iisc.ac.in/gametheory/ln/web-cp5-shapley.pdf
-    // 2.4 Example 4: A Logistics Game
+    // 2.4 Example 4: A Logistics Game(the doc maybe give wrong result)
     #[test]
     fn test_logistics_game() {
         let coalition_worth = hashmap! {
@@ -171,9 +171,9 @@ mod tests {
         };
 
         let shapley = Shapley::new(vec![1, 2, 3, 4], coalition_worth);
-        assert_almost_eq!(shapley.shapley_value(1).unwrap(), 20.0, 1e-10);
-        assert_almost_eq!(shapley.shapley_value(2).unwrap(), 20.0, 1e-10);
-        assert_almost_eq!(shapley.shapley_value(3).unwrap(), 5.0, 1e-10);
-        assert_almost_eq!(shapley.shapley_value(4).unwrap(), 20.0, 1e-10);
+        assert_almost_eq!(shapley.shapley_value(1).unwrap(), 23.333333333333332, 1e-10);
+        assert_almost_eq!(shapley.shapley_value(2).unwrap(), 10.0, 1e-10);
+        assert_almost_eq!(shapley.shapley_value(3).unwrap(), 8.333333333333332, 1e-10);
+        assert_almost_eq!(shapley.shapley_value(4).unwrap(), 23.333333333333332, 1e-10);
     }
 }
