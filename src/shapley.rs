@@ -124,8 +124,8 @@ mod tests {
         assert_eq!(shapley.shapley_value(2).unwrap(), 20.0);
     }
 
-    /// https://gtl.csa.iisc.ac.in/gametheory/ln/web-cp5-shapley.pdf
-    /// 2.1 Example 1: Divide the Dollar Game
+    // https://gtl.csa.iisc.ac.in/gametheory/ln/web-cp5-shapley.pdf
+    // 2.1 Example 1: Divide the Dollar Game
     #[test]
     fn test_divide_dollar_game() {
         let coalition_worth = hashmap! {
@@ -143,5 +143,37 @@ mod tests {
         assert_almost_eq!(shapley.shapley_value(1).unwrap(), 200.0, 1e-10);
         assert_almost_eq!(shapley.shapley_value(2).unwrap(), 50.0, 1e-10);
         assert_almost_eq!(shapley.shapley_value(3).unwrap(), 50.0, 1e-10);
+    }
+
+    // https://gtl.csa.iisc.ac.in/gametheory/ln/web-cp5-shapley.pdf
+    // 2.4 Example 4: A Logistics Game
+    #[test]
+    fn test_logistics_game() {
+        let coalition_worth = hashmap! {
+            Coalition::new(vec![1]) => 0.0,
+            Coalition::new(vec![2]) => 0.0,
+            Coalition::new(vec![3]) => 0.0,
+            Coalition::new(vec![4]) => 0.0,
+
+            Coalition::new(vec![1, 2]) => 0.0,
+            Coalition::new(vec![1, 3]) => 0.0,
+            Coalition::new(vec![1, 4]) => 0.0,
+            Coalition::new(vec![2, 3]) => 0.0,
+            Coalition::new(vec![2, 4]) => 0.0,
+            Coalition::new(vec![3, 4]) => 0.0,
+
+            Coalition::new(vec![1, 2, 3]) => 0.0,
+            Coalition::new(vec![2, 3, 4]) => 0.0,
+
+            Coalition::new(vec![1, 2, 4]) => 45.0,
+            Coalition::new(vec![1, 3, 4]) => 40.0,
+            Coalition::new(vec![1, 2, 3, 4]) => 65.0,
+        };
+
+        let shapley = Shapley::new(vec![1, 2, 3, 4], coalition_worth);
+        assert_almost_eq!(shapley.shapley_value(1).unwrap(), 20.0, 1e-10);
+        assert_almost_eq!(shapley.shapley_value(2).unwrap(), 20.0, 1e-10);
+        assert_almost_eq!(shapley.shapley_value(3).unwrap(), 5.0, 1e-10);
+        assert_almost_eq!(shapley.shapley_value(4).unwrap(), 20.0, 1e-10);
     }
 }
