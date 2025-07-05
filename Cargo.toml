@@ -1,12 +1,21 @@
-[package]
-name = "shapley"
-version = "0.1.0"
+[workspace]
+members = [
+    "crates/*",
+    "bindings/*",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.0.1"
 edition = "2021"
+authors = ["Mathew Shen <datahonor@gmail.com>"]
+documentation = "https://docs.rs/crate/shapley"
+repository = "https://github.com/shenxiangzhuang/shapley"
+readme = "README.md"
+license = "MIT"
+description = "A fast shapley score calculator"
+keywords = ["GameTheory", "Shapley"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-[lib]
-name = "shapley"
-crate-type = ["cdylib"]
-
-[dependencies]
-pyo3 = "0.22.0"
+[workspace.dependencies]
+anyhow = "1.0.98"
+statrs = "0.18.0"
