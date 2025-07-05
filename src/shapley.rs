@@ -25,7 +25,9 @@ impl Coalition {
     fn subtract(&self, player: u64) -> Self {
         let mut new_members = self.members.clone();
         new_members.remove(&player);
-        Coalition { members: new_members }
+        Coalition {
+            members: new_members,
+        }
     }
 }
 
@@ -42,7 +44,8 @@ impl Shapley {
 
         // Precompute combinatorial weights
         let mut weights = HashMap::new();
-        for s in 0..n {  // s = coalition size without player i
+        for s in 0..n {
+            // s = coalition size without player i
             let binom = binomial((n - 1) as u64, s as u64);
             weights.insert(s, (1.0 / n as f64) / binom);
         }
@@ -61,11 +64,14 @@ impl Shapley {
             // Consider only coalitions containing player
             if coalition.contains(player) {
                 let without = coalition.subtract(player);
-                let value_without = self.coalition_worth.get(&without)
+                let value_without = self
+                    .coalition_worth
+                    .get(&without)
                     .context(format!("Missing value for coalition {:?}", without))?;
 
                 let s = without.size();
-                let weight = self.coalition_size_weights
+                let weight = self
+                    .coalition_size_weights
                     .get(&s)
                     .context("Missing combinatorial weight")?;
 
@@ -98,7 +104,10 @@ mod tests {
         };
         let shapley = Shapley::new(vec![1], coalition_worth);
         // Should contain empty coalition automatically
-        assert_eq!(shapley.coalition_worth.get(&Coalition::new(vec![])), Some(&0.0));
+        assert_eq!(
+            shapley.coalition_worth.get(&Coalition::new(vec![])),
+            Some(&0.0)
+        );
     }
 
     #[test]
