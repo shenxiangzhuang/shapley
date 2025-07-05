@@ -12,8 +12,9 @@ is a fast Shapley value calculator written in rust.
 
 ## Install
 
-- Python: `pip install shapleyrs`
-- Rust: `cargo add shapley`
+Python: `pip install shapleyrs`
+
+Rust: `cargo add shapley`
 
 
 ## Quick Start
