@@ -1,2 +1,3 @@
-# shapley
-Shapley value calculator in Rust
+# Shapley
+
+Shapley value calculator in Rust.
