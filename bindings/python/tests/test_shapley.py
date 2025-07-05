@@ -1,5 +1,5 @@
 import pytest
-from shapley import Shapley
+from shapleyrs import Shapley
 
 
 def test_empty_coalition_handling():

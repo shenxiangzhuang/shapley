@@ -31,7 +31,7 @@ impl Shapley {
 /// A Python module implemented in Rust.
 #[pymodule]
 fn _shapley(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
-    m.add_class::<Shapley>()?;
     m.add("__version__", env!("CARGO_PKG_VERSION"))?;
+    m.add_class::<Shapley>()?;
     Ok(())
 }

@@ -3,7 +3,7 @@ requires = ["maturin>=1.8,<2.0"]
 build-backend = "maturin"
 
 [project]
-name = "shapley"
+name = "shapleyrs"
 requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Rust",
@@ -18,4 +18,4 @@ tests = [
 [tool.maturin]
 python-source = "python"
 features = ["pyo3/extension-module"]
-module-name = "shapley._shapley"
+module-name = "shapleyrs._shapley"
