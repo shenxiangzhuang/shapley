@@ -11,9 +11,10 @@ description.workspace = true
 publish = false
 
 [dependencies]
-shapley = { version = "0.1.0", path = "../../crates/shapley" }
+# this crate won't be published, we always use the local version
+shapley = { version = ">=0", path = "../../crates/shapley" }
 
 [dependencies.pyo3]
 version = "0.25.0"
-# "abi3-py38" tells pyo3 (and maturin) to build using the stable ABI with minimum Python version 3.8
-features = ["abi3-py38"]
+# "abi3-py39" tells pyo3 (and maturin) to build using the stable ABI with minimum Python version 3.9
+features = ["abi3-py39"]
