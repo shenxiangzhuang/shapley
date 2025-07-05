@@ -8,7 +8,7 @@ pub struct Coalition {
 }
 
 impl Coalition {
-    fn new(members: Vec<u64>) -> Self {
+    pub fn new(members: Vec<u64>) -> Self {
         Coalition {
             members: members.into_iter().collect(),
         }
@@ -31,6 +31,7 @@ impl Coalition {
     }
 }
 
+#[derive(Debug)]
 pub struct Shapley {
     coalition_worth: HashMap<Coalition, f64>,
     coalition_size_weights: HashMap<usize, f64>,
