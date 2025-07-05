@@ -10,14 +10,15 @@
 [`shapley`](https://github.com/shenxiangzhuang/shapley)
 is a fast Shapley value calculator written in rust.
 
+## Install
+
+- Python: `pip install shapleyrs`
+- Rust: `cargo add shapley`
+
 
 ## Quick Start
 
 ### Python
-
-```bash
-pip install shapleyrs
-```
 
 ```python
 from shapleyrs import Shapley
@@ -35,10 +36,6 @@ print(shapley.shapley_value(2)) # 20
 
 
 ### Rust
-
-```bash
-cargo add shapley
-```
 
 ```rust
 use shapley::Shapley;
