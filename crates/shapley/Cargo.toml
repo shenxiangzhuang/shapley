@@ -18,6 +18,7 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 anyhow.workspace = true
+rayon = "1.10.0"
 statrs.workspace = true
 
 [dev-dependencies]
