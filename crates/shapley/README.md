@@ -21,15 +21,20 @@ cargo add shapley
 ### Usage
 
 ```rust
-use shapley::Shapley;
+use std::collections::HashMap;
 
-let shapley = Shapley::new(players: [1, 2], coalition_worth: {
-    (): 0,
-    (1,): 10,
-    (2,): 20,
-    (1, 2): 30,
-});
+use shapley::shapley::{Coalition, Shapley};
 
-println!("{}", shapley.shapley_value(1)); // 10
-println!("{}", shapley.shapley_value(2)); // 20
+fn main() {
+    let players = vec![1, 2];
+    let coalition_worth = HashMap::from([
+        (Coalition::new(vec![]), 0.0),
+        (Coalition::new(vec![1]), 10.0),
+        (Coalition::new(vec![2]), 20.0),
+        (Coalition::new(vec![1, 2]), 30.0),
+    ]);
+    let shapley = Shapley::new(players, coalition_worth);
+    println!("player1: {}", shapley.shapley_value(1).unwrap());  // 10
+    println!("player2: {}", shapley.shapley_value(2).unwrap());  // 20
+}
 ```
