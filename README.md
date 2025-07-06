@@ -40,7 +40,7 @@ print(shapley.shapley_value(2)) # 20
 ```rust
 use std::collections::HashMap;
 
-use shapley::shapley::{Coalition, Shapley};
+use shapley::{Coalition, Shapley};
 
 fn main() {
     let players = vec![1, 2];
