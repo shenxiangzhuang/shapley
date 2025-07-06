@@ -376,7 +376,7 @@ dependencies = [
 
 [[package]]
 name = "shapley"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "maplit",
@@ -386,7 +386,7 @@ dependencies = [
 
 [[package]]
 name = "shapley-py"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "pyo3",
  "shapley",
