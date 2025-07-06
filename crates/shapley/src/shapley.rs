@@ -1,4 +1,5 @@
-use anyhow::{Context, Result};
+use anyhow::{Context, Error, Result};
+use rayon::prelude::*;
 use statrs::function::factorial::binomial;
 use std::collections::{BTreeSet, HashMap};
 
@@ -58,37 +59,42 @@ impl Shapley {
     }
 
     pub fn shapley_value(&self, player: u64) -> Result<f64> {
-        let mut total_contribution = 0.0;
-        let mut total_weight = 0.0;
+        let (total_contribution, total_weight) = self
+            .coalition_worth
+            .par_iter()
+            .map(|(coalition, &value_with)| {
+                // Consider only coalitions containing player
+                match coalition.contains(player) {
+                    false => Ok::<(f64, f64), Error>((0.0, 0.0)),
+                    true => {
+                        let without = coalition.subtract(player);
+                        let value_without = self.coalition_worth.get(&without);
+                        match value_without {
+                            None => Ok((0.0, 0.0)),
+                            Some(value_without) => {
+                                let s = without.size();
+                                let weight = self
+                                    .coalition_size_weights
+                                    .get(&s)
+                                    .context("Missing combinatorial weight")?;
 
-        for (coalition, &value_with) in &self.coalition_worth {
-            // Consider only coalitions containing player
-            if coalition.contains(player) {
-                let without = coalition.subtract(player);
-                let value_without = self
-                    .coalition_worth
-                    .get(&without)
-                    .context(format!("Missing value for coalition {:?}", without))?;
+                                let contribution = weight * (value_with - value_without);
+                                Ok((contribution, weight.clone()))
+                            }
+                        }
+                    }
+                }
+            })
+            .filter_map(|x: Result<_, _>| x.ok())
+            .reduce_with(|a, b| (a.0 + b.0, a.1 + b.1))
+            .unzip();
 
-                let s = without.size();
-                let weight = self
-                    .coalition_size_weights
-                    .get(&s)
-                    .context("Missing combinatorial weight")?;
-
-                total_contribution += weight * (value_with - value_without);
-                total_weight += weight;
+        match (total_weight, total_contribution) {
+            (Some(weight), Some(contribution)) if weight.abs() >= f64::EPSILON => {
+                Ok(contribution / weight)
             }
+            _ => anyhow::bail!("Insufficient data for player {}", player),
         }
-
-        if total_weight.abs() < f64::EPSILON {
-            anyhow::bail!(
-                "Total weight is zero for player {} (insufficient data)",
-                player
-            );
-        }
-
-        Ok(total_contribution / total_weight)
     }
 }
 
